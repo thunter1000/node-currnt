@@ -1,14 +1,20 @@
+/**
+ * @template T,S
+ */
 export default class Currnt {
   /**
-   * @param {Function} action The function which processes the data
-   * @param {[]} data The data passed to the action function.
+   * @param {(data: T) => Promise<S>} action The function which processes the data
+   * @param {T[]} data The data passed to the action function.
    */
   constructor(action, data) {
     this.action = action;
     this.data = data;
   }
 
+  /**
+   * @returns {Promise<S[]>}
+   */
   run() {
-    this.data.map(item => this.action(item));
+    return Promise.all(this.data.map(this.action));
   }
 }

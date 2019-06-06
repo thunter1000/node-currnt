@@ -22,7 +22,7 @@ describe('Currnt should pass data to the action function', () => {
   });
 });
 
-describe('Current should eventually return the result of processing the data', () => {
+describe('Currnt should eventually return the result of processing the data', () => {
   let action;
   const testData = [...Array(10).keys()];
   let results;
@@ -37,5 +37,41 @@ describe('Current should eventually return the result of processing the data', (
 
   it('Should return the data after the action modifier has been applied', async () => {
     expect(results).to.be.eql(await Promise.all(testData.map(action)));
+  });
+});
+
+describe('Currnt should batch actions', () => {
+  let action;
+  const testData = [...Array(10).keys()];
+  const batchSize = 2;
+  let waitPromise;
+  let waitResolve;
+
+  before(() => {
+    waitPromise = new Promise((resolve) => { waitResolve = resolve; });
+
+    action = spy(i => new Promise(async (resolve) => {
+      if (i <= batchSize) {
+        resolve(i);
+      } else {
+        await waitPromise;
+        resolve(i);
+      }
+    }));
+
+    new Currnt(action, testData)
+      .batch(batchSize)
+      .run();
+  });
+
+  it('The first batch is processed', async () => {
+    await new Promise(r => setTimeout(r, 10));
+    expect(action).to.be.called.exactly(2);
+  });
+
+  it('Followed by the second batch', async () => {
+    waitResolve();
+    await new Promise(r => setTimeout(r, 10));
+    expect(action).to.be.called.min(batchSize + 1);
   });
 });

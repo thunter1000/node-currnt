@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "module": "main.js",
+  "author": "Thomas Hunter",
+  "license": "MIT",
+  "dependencies": {
+    "currnt": "../",
+    "esm": "^3.2.25"
+  },
+  "scripts": {
+    "lint": "eslint src/**",
+    "lint:watch": "esw -w src/**"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-watch": "^5.1.2"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "currnt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "module": "main.js",
+  "author": "Thomas Hunter",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-watch": "^5.1.2",
+    "mocha": "^6.1.4"
+  },
+  "scripts": {
+    "run": "node index.js",
+    "lint": "eslint src/**",
+    "lint:watch": "esw -w src/** --watch",
+    "test": "mocha src/**/*.test.js --require esm "
+  }
+}

@@ -6,8 +6,11 @@ describe('Currnt should pass data to the action function', () => {
   const testData = [...Array(10).keys()];
   let action;
 
-  before(() => {
-    action = spy(() => {});
+  before(async () => {
+    action = spy(i => new Promise((r) => {
+      r(i);
+    }));
+    await new Promise(r => setTimeout(r, 10));
     new Currnt(action, testData).run();
   });
 
@@ -51,11 +54,11 @@ describe('Currnt should batch actions', () => {
     waitPromise = new Promise((resolve) => { waitResolve = resolve; });
 
     action = spy(i => new Promise(async (resolve) => {
-      if (i <= batchSize) {
-        resolve(i);
-      } else {
+      if (i === 0) {
         await waitPromise;
         resolve(i);
+      } else {
+        await new Promise(() => {});
       }
     }));
 
@@ -66,12 +69,16 @@ describe('Currnt should batch actions', () => {
 
   it('The first batch is processed', async () => {
     await new Promise(r => setTimeout(r, 10));
-    expect(action).to.be.called.exactly(2);
+    expect(action).to.be.called.exactly(batchSize);
   });
 
   it('Followed by the second batch', async () => {
     waitResolve();
     await new Promise(r => setTimeout(r, 10));
     expect(action).to.be.called.min(batchSize + 1);
+  });
+
+  it('The third batch should never complete', async () => {
+    expect(action).to.be.called.exactly(batchSize + 1);
   });
 });

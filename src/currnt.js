@@ -25,33 +25,22 @@ export default class Currnt {
    * @returns {Promise<S[]>}
    */
   async run() {
-    let batchedData;
-    if (this.batchSize === null) {
-      batchedData = [this.data];
-    } else {
-      batchedData = this.data.reduce(
-        (pr, c) => {
-          let r = pr;
-          if (pr[0].length >= this.batchSize) {
-            r = [[], ...pr];
-          }
-          r = [[c, ...r[0]], ...r.slice(1)];
-          return r;
-        },
-        [[]]
-      );
+    // Start initial promises.
+    const toProcess = this.data.slice(0);
+
+    const next = () => {
+      if (toProcess.length <= 0) {
+        return; // all done
+      }
+      const c = toProcess.shift();
+      this.action(c).then(next);
+    };
+
+    for (let i = 0; i < (this.batchSize || this.data.length); i += 1) {
+      next();
     }
 
-    const process = (bd) => {
-      if (bd.length <= 0) return new Promise(r => r([]));
-
-      this.runBatch(bd[0])
-        .then((br) => {
-          process(bd.slice(1));
-        });
-      return [];
-    };
-    process(batchedData);
+    return [];
   }
 
   runBatch(batch) {

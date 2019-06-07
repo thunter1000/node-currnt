@@ -7,6 +7,12 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch example",
+      "program": "${workspaceFolder}/example/index.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Mocha Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
@@ -19,7 +25,6 @@
         "${workspaceFolder}/src/**/*.test.js"
       ],
       "internalConsoleOptions": "openOnSessionStart"
-    }
-    
+    } 
   ]
 }

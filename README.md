@@ -9,3 +9,6 @@ NodeJS library allowing multiple executions at once to return a single array obj
 
 # Example.
 There is an example project in the project (`/example`) view the [README.md](example/) to get started.
+
+# Demo
+![](./demo.gif)

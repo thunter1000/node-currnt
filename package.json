@@ -19,7 +19,7 @@
     "mocha": "^6.1.4"
   },
   "scripts": {
-    "run": "node index.js",
+    "start": "node index.js",
     "lint": "eslint src/**",
     "lint:watch": "esw -w src/** --watch",
     "test": "mocha src/**/*.test.js --require esm -u bdd",

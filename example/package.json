@@ -10,6 +10,7 @@
     "esm": "^3.2.25"
   },
   "scripts": {
+    "start": "node index.js",
     "lint": "eslint src/**",
     "lint:watch": "esw -w src/**"
   },

@@ -28,22 +28,19 @@ export default class Currnt {
     // Start initial promises.
     const toProcess = this.data.slice(0);
 
-    const next = () => {
+    const next = (resolver = () => {}, results = []) => {
       if (toProcess.length <= 0) {
-        return; // all done
+        resolver(results);
+        return;
       }
       const c = toProcess.shift();
-      this.action(c).then(next);
+      this.action(c).then((r) => { next(resolver, [...results, r]); });
     };
 
+    const promises = [];
     for (let i = 0; i < (this.batchSize || this.data.length); i += 1) {
-      next();
+      promises.push(new Promise(r => next(r)));
     }
-
-    return [];
-  }
-
-  runBatch(batch) {
-    return Promise.all(batch.map(this.action));
+    return (await Promise.all(promises)).flatMap(x => x);
   }
 }

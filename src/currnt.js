@@ -41,6 +41,6 @@ export default class Currnt {
     for (let i = 0; i < (this.batchSize || this.data.length); i += 1) {
       promises.push(new Promise(r => next(r)));
     }
-    return (await Promise.all(promises)).flatMap(x => x);
+    return (await Promise.all(promises)).reduce((acc, cv) => [...acc, ...cv], []);
   }
 }

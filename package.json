@@ -16,7 +16,7 @@
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-watch": "^5.1.2",
-    "mocha": "^6.2.3"
+    "mocha": "^8.1.0"
   },
   "scripts": {
     "start": "node index.js",
